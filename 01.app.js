@@ -15,10 +15,7 @@ app.locals.pretty = true
 
 
 /*************** middleware ****************/
-// application/json
 app.use(express.json())
-
-// application/x-www-urlencoded
 app.use(express.urlencoded({ extended: false }))
 
 
