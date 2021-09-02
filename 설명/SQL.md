@@ -61,6 +61,12 @@ FLUSH PRIVILEGES;
 
 -- 패스워드의 비밀번호 평문 -> 암호화 변경
 ALTER user 'root'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY '000000';
+
+CREATE USER 'book'@'127.0.0.1' IDENTIFIED BY '000000';
+ALTER user 'book'@'%' IDENTIFIED WITH mysql_native_password BY '000000';
+GRANT ALL PRIVILEGES ON sample.* TO 'book'@'127.0.0.1';
+
+grant all on mysql.* to root@'127.0.0.1';
 ```
 
 ```sql

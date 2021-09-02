@@ -1,5 +1,9 @@
-.wrapper {max-width: 800px; margin: 30px auto;}
-.content-wrapper {padding: 2em 1em;}
-@media screen and (max-width: 992px) {
-  
-}
+a:hover {text-decoration: none; color: inherit;}
+
+.wrapper {max-width: 992px; margin: auto; padding: 2em 1em;}
+
+.header-wrapper {background-color: darkslategrey; color: #f9f9f9; display: flex; justify-content: space-between;}
+.hearder-wrapper h1.logo {font-size: 1.25em; padding: .75em;}
+.hearder-wrapper .navi-wrap {display: flex;}
+.hearder-wrapper .navi-wrap .navi {padding: 1em 1.5em;}
+.hearder-wrapper .navi-wrap .navi:hover {background-color: dimgrey; color: goldenrod;}
