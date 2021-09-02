@@ -44,3 +44,33 @@ DELETE FROM users WHERE idx=1;
 
 -- ★★★★★ DELETE와 UPDATE는 꼭!!!! WHERE절을 넣어야한다. ★★★★★
 ```
+
+### MySQL 외부접속 할 수 있게 하기
+```sql
+-- mysql DB를 사용하겠습니다.
+USE msyql;
+
+-- root계정인데 서버 127.0.0.1에서 접근 가능한 사용자를 만들겠습니다.
+CREATE user 'root'@'127.0.0.1' identified by '패스워드';
+
+-- root계정중 127.0.0.1의 사용자에게 모든DB.모든Table의 사용을 허가합니다.
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'127.0.0.1';
+
+-- 즉시 권한 적용
+FLUSH PRIVILEGES;
+
+-- 패스워드의 비밀번호 평문 -> 암호화 변경
+ALTER user 'root'@'127.0.0.1' IDENTIFIED WITH mysql_native_password BY '000000';
+```
+
+```sql
+CREATE TABLE `users`
+	`idx` INT(11) UNSIGNED NOT NULL AUTO_INCREMENT FIRST,
+	`username` VARCHAR(50) NOT NULL,
+	`userid` VARCHAR(24) NOT NULL,
+	`userpw` VARCHAR(255) NOT NULL,
+	`email` VARCHAR(255) NULL DEFAULT NULL,
+	`info` TEXT NULL,
+	`createdAt` DATETIME NOT NULL DEFAULT NOW(),
+	ADD PRIMARY KEY (`idx`);
+```
