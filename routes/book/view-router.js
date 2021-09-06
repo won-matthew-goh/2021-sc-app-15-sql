@@ -18,7 +18,7 @@ router.get('/:idx', async (req, res, next) => {
 		const description = '선택하신 도서의 상세 정보 입니다.'
 		const css = 'book/view'
 		const js = 'book/view'
-		
+
 		if(book) res.status(200).render('book/view', { title, description, css, js, book })
 		else next(error(400, "존재하지 않는 데이터 입니다."))
 	}
