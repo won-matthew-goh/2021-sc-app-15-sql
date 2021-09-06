@@ -2,7 +2,6 @@
 
 /*************** global init **************/
 require('dotenv').config()
-const port = process.env.PORT
 const path = require('path')
 const express = require('express')
 const app = express()
