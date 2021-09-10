@@ -80,3 +80,59 @@ CREATE TABLE `users`
 	`createdAt` DATETIME NOT NULL DEFAULT NOW(),
 	ADD PRIMARY KEY (`idx`);
 ```
+
+### 새로운 계정 생성 및 데이터베이스의 권한 적용
+```sql
+CREATE user 'sample'@'%' IDENTIFIED BY '000000';
+ALTER user 'sample'@'%' IDENTIFIED WITH mysql_native_password BY '000000';
+GRANT ALL PRIVILEGES ON sample.* TO 'sample'@'%';
+FLUSH PRIVILEGES;
+```
+
+
+## SQL문
+```sql
+INSERT
+UPDATE: WHERE
+DELETE: WHERE
+SELECT: WHERE, ORDER, LIMIT
+
+INSERT INTO 테이블명 SET 필드명=값, 필드명2=값 ...
+INSERT INTO 테이블명 (필드명, 필드명2, ... ) VALUES (값, 값2, ...)
+UPDATE 테이블명 SET 필드명=값, 필드명2=값 ... [필수] WHERE 
+DELETE FROM 테이블명 [필수] WHERE 
+
+SELECT 필드명1, 필드명2 FROM 테이블명;
+SELECT * FROM 테이블명;
+SELECT COUNT(idx) FROM 테이블명 [선택: WHERE] (ORDER는 에러남);
+SELECT * FROM 테이블명 WHERE idx=1;
+SELECT * FROM 테이블명 WHERE idx >= 5 AND idx <= 9;
+SELECT * FROM 테이블명 WHERE title = '나비';			-- 나비
+SELECT * FROM 테이블명 WHERE title LIKE '나비';		-- 나비
+SELECT * FROM 테이블명 WHERE title LIKE '나비%';	-- 나비...
+SELECT * FROM 테이블명 WHERE title LIKE '%나비';	-- ...나비
+SELECT * FROM 테이블명 WHERE title LIKE '%나비%';	-- ...나비...
+SELECT * FROM 테이블명 WHERE... ORDER BY idx DESC;
+SELECT * FROM 테이블명 WHERE... ORDER BY idx ASC;
+SELECT * FROM 테이블명 WHERE... ORDER BY title ASC, content DESC;
+SELECT * FROM 테이블명 WHERE... ORDER... LIMIT 시작idx, 갯수;
+
+-- LEFT JOIN
+SELECT B.*, F.oriname, F.savename, F.idx AS fileIdx
+FROM books B 
+LEFT JOIN files F 
+ON B.idx = F.idx 
+WHERE B.status < 3
+ORDER BY B.idx DESC
+LIMIT 0, 5;
+
+
+-- LEFT JOIN
+SELECT books.*, file.oriname, file.savename, file.idx AS fileIdx
+FROM books
+LEFT JOIN files
+ON books.idx = file.idx 
+WHERE books.status < 3
+ORDER BY books.idx DESC
+LIMIT 0, 5;
+```
