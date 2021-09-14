@@ -11,7 +11,6 @@ const saveRouter = require('./save-router')
 // const updateRouter = require('./update-router')
 const deleteRouter = require('./delete-router')
 
-// router.post('/:id', updateRouter)						// UPDATE: 수정
 router.post('/', saveRouter)					// POST: 저장
 router.delete('/', deleteRouter)				// DELETE: 삭제
 router.use('/form', formRouter)					// HTML: 글작성(수정)페이지
