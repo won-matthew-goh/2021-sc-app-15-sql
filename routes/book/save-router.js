@@ -14,7 +14,7 @@ router.post('/', uploader.fields([{name: 'cover'}, {name: 'upfile'}]), async (re
 		sql += (_method === 'PUT' && idx) ? ' WHERE idx='+idx : ''
 		values = [title, writer, content]
 		const [rs] = await pool.execute(sql, values)
-
+/* 
 		if(req.files) { // 첨부파일이 존재함
 			for(let [k, [v]] of Object.entries(req.files)) {
 				let { originalname, filename, mimetype, size } = v
@@ -23,7 +23,7 @@ router.post('/', uploader.fields([{name: 'cover'}, {name: 'upfile'}]), async (re
 				values = [rs.insertId, originalname, filename, mimetype, size, k.substr(0, 1).toUpperCase()]
 				await pool.execute(sql, values)
 			}
-		}
+		} */
 		res.redirect(`/${req.lang}/book`)
 	}
 	catch(err) {
