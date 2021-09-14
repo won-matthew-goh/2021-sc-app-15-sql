@@ -1,4 +1,4 @@
-document.saveForm.addEventListener('submit', onSubmit)
+document.saveForm.addEventListener('submit', onSubmit);
 function onSubmit(e) {
 	e.preventDefault();
 	var title = this.title.value.trim();
