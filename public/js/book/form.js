@@ -16,7 +16,6 @@ document.querySelector('#btRemoveFile').addEventListener('click', onRemoveFile)
 document.querySelector('#btRemoveCover').addEventListener('click', onRemoveFile)
 function onRemoveFile(e) {
 	var idx = this.dataset['idx'];
-	var lang = this.dataset['lang'];
 	var parent = this.parentNode;
 	axios.delete('/book/file/'+idx).then(onSucess).catch(onError);
 	function onSucess(r) {
