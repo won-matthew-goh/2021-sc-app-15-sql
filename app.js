@@ -36,6 +36,7 @@ const apiRouter = require('./routes/api/book')
 app.use(langMW)
 app.use('/book', bookRouter)
 app.use('/api/book', apiRouter)
+app.use('/auth', authRouter)
 
 
 
