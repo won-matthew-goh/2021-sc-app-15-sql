@@ -32,26 +32,41 @@ emailEl.addEventListener('blur', verifyEmail)
 
 function onSubmit(e) {
 	e.preventDefault();
-
-	var isUserid = verifyUserid()
-	var isPasswd = verifyPasswd()
-	var isPasswd2 = varifyPasswd2()
-	var isPasswdEqual = verifyPasswdEqual()
-	var isUsername = verifyUsername()
-	var isEmail = verifyEmail()
-
-	if(isUserid && isPasswd && isPasswd2 && isPasswdEqual && isUsername && isEmail) f.submit();
+	
+	var isUserid = verifyUserid();
+	var isPasswd = verifyPasswd();
+	var isPasswd2 = verifyPasswd2();
+	var isPasswdEqual = verifyPasswdEqual();
+	var isUsername = verifyUsername();
+	var isEmail = verifyEmail();
+	
+	if(isUserid && isPasswd  && isPasswd2 && isPasswdEqual && isUsername && isEmail) f.submit();
 }
 
 function verifyUserid() {
 	var userid = useridEl.value.trim();
 	verifyReset(useridEl, useridTxt);
-	useridEl.classList.remove('error');
-	if(userid === '' || userid.lenth < 6 || userid.length > 24) {
-		verifyFalse(useridEl, useridTxt, userid === '' ? ERR.ID_NULL : ERR.ID_LEN;);
+	if(userid === '' || userid.length < 6 || userid.length > 24) {
+		verifyFalse(useridEl, useridTxt, userid === '' ? ERR.ID_NULL : ERR.ID_LEN);
 		return false;
 	}
 	else {
+		axios
+		.get('/api/auth/verify', { params: { key: 'userid', value: userid } })
+		.then(function(r) {
+			if(r.data.isUsed) {
+				verifyFalse(useridEl, useridTxt, ERR.ID_TAKEN)
+				return false;
+			}
+			else {
+				verifyTrue(useridEl, useridTxt, ERR.ID_OK)
+				return true;
+			}
+		})
+		.catch(function(err) {
+			verifyFalse(useridEl, useridTxt, err.response.data.msg)
+			return false;
+		})
 		verifyTrue(useridEl, useridTxt, ERR.ID_OK);
 		return true;
 	}
@@ -60,49 +75,76 @@ function verifyUserid() {
 function verifyPasswd() {
 	var passwd = passwdEl.value.trim();
 	verifyReset(passwdEl, passwdTxt)
-	if(passwd === '') {
+	if(passwd === '' || passwd.length < 6 || passwd.length > 24) {
+		verifyFalse(passwdEl, passwdTxt, passwd === '' ? ERR.PW_NULL : ERR.PW_LEN)
 		return false;
 	}
-	if(passwd.length < 6 || passwd.length > 24) {
-		return false;
+	else {
+		verifyTrue(passwdEl, passwdTxt)
+		return true;
 	}
-	return true
 }
 
 function verifyPasswd2() {
 	var passwd2 = passwd2El.value.trim();
-	if(passwd2 === '') {
+	verifyReset(passwd2El, passwd2Txt)
+	if(passwd2 === '' || passwd2.length < 6 || passwd2.length > 24) {
+		verifyFalse(passwd2El, passwd2Txt, passwd2 === '' ? ERR.PW2_NULL : ERR.PW2_LEN)
 		return false;
 	}
-	if(passwd2.length < 6 || passwd2.length > 24) {
-		return false;
+	else {
+		verifyTrue(passwd2El, passwd2Txt)
+		return true;
 	}
-	return true;
 }
 
 function verifyPasswdEqual() {
 	var passwd = passwdEl.value.trim();
 	var passwd2 = passwd2El.value.trim();
-	if(passwd === passwd2) {
+	if(!(verifyPasswd() && verifyPasswd2())) {
 		return false;
 	}
-	return true;
+	if(passwd !== passwd2) {
+		verifyFalse(passwdEl, passwdTxt, ERR.PW_TAKEN);
+		verifyFalse(passwd2El, passwd2Txt, ERR.PW_TAKEN);
+		return false;
+	}
+	else {
+		verifyTrue(passwdEl, passwdTxt)
+		verifyTrue(passwd2El, passwd2Txt)
+		return true;
+	}
 }
 
 function verifyUsername() {
 	var username = usernameEl.value.trim();
+	verifyReset(usernameEl, usernameTxt)
 	if(username === '') {
+		verifyFalse(usernameEl, usernameTxt, ERR.NAME_NULL)
 		return false;
 	}
-	return true;
+	else {
+		verifyTrue(usernameEl, usernameTxt)
+		return true;
+	}
 }
 
 function verifyEmail() {
+	var regExp = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 	var email = emailEl.value.trim();
+	verifyReset(emailEl, emailTxt)
 	if(email === '') {
+		verifyFalse(emailEl, emailTxt, ERR.EMAIL_NULL)
 		return false;
 	}
-	return true;
+	else if(!regExp.test(email)) {
+		verifyFalse(emailEl, emailTxt, ERR.EMAIL_TAKEN)
+		return false;
+	}
+	else {
+		verifyTrue(emailEl, emailTxt)
+		return true;
+	}
 }
 
 function verifyReset(el, elTxt) {
@@ -113,13 +155,16 @@ function verifyReset(el, elTxt) {
 }
 
 function verifyFalse(el, elTxt, msg) {
+	el.classList.remove('active');
+	el.classList.add('error');
 	elTxt.classList.add('error');
 	elTxt.innerHTML = msg;
-	el.classList.add('error');
-	el.focus();
 }
 
 function verifyTrue(el, elTxt, msg) {
 	el.classList.add('active');
-	elTxt.innerHTML = msg;
+	el.classList.remove('error');
+	elTxt.classList.remove('error');
+	elTxt.innerHTML = msg || '';
 }
+
