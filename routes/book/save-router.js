@@ -16,21 +16,21 @@
 
 
 const express = require('express')
-const createError = require('http-errors')
 const router = express.Router()
+const createError = require('http-errors')
 const { moveFile } = require('../../modules/util')
 const { pool } = require('../../modules/mysql-init')
 const uploader = require('../../middlewares/multer-book-mw')
 const { isUser, isGuest, isMyBook } = require('../../middlewares/auth-mw')
 
 
-router.post('/', isUser, isMyBook('body', 'U'), uploader.fields([{name: 'cover'}, {name: 'upfile'}]), async (req, res, next) => {
+router.post('/', isUser, uploader.fields([{name: 'cover'}, {name: 'upfile'}]), isMyBook('body', 'U'), async (req, res, next) => {
 	let sql, values
 	try {
 		const { title, writer, content, _method, idx } = req.body
 		const isUpdate = (_method === 'PUT' && idx)
 		sql = isUpdate ? " UPDATE books " : " INSERT INTO books "
-		sql += " SET title=?, writer=?, content=? "
+		sql += " SET fidx=?, title=?, writer=?, content=? "
 		sql += isUpdate ? " WHERE idx = " + idx : ""
 		values = [req.session.user.idx, title, writer, content]
 		const [rs] = await pool.execute(sql, values)
@@ -59,10 +59,6 @@ router.post('/', isUser, isMyBook('body', 'U'), uploader.fields([{name: 'cover'}
 	catch(err) {
 		next(createError(err))
 	}
-})
-
-router.put('/', (req, res, next) => {
-	res.send('받음')
 })
 
 module.exports = router
