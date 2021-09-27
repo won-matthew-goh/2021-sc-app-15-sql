@@ -21,9 +21,10 @@ const router = express.Router()
 const { moveFile } = require('../../modules/util')
 const { pool } = require('../../modules/mysql-init')
 const uploader = require('../../middlewares/multer-book-mw')
+const { isUser, isGuest, isMyBook } = require('../../middlewares/auth-mw')
 
 
-router.post('/', uploader.fields([{name: 'cover'}, {name: 'upfile'}]), async (req, res, next) => {
+router.post('/', isUser, isMyBook('body', 'U'), uploader.fields([{name: 'cover'}, {name: 'upfile'}]), async (req, res, next) => {
 	let sql, values
 	try {
 		const { title, writer, content, _method, idx } = req.body
@@ -31,7 +32,7 @@ router.post('/', uploader.fields([{name: 'cover'}, {name: 'upfile'}]), async (re
 		sql = isUpdate ? " UPDATE books " : " INSERT INTO books "
 		sql += " SET title=?, writer=?, content=? "
 		sql += isUpdate ? " WHERE idx = " + idx : ""
-		values = [title, writer, content]
+		values = [req.session.user.idx, title, writer, content]
 		const [rs] = await pool.execute(sql, values)
 		
 		if(req.files) {
