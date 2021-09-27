@@ -25,6 +25,12 @@ app.use(express.urlencoded({ extended: false }))
 app.use(methodInit())	// method-override
 app.use(session(app))
 
+app.use((req, res, next) => {
+	console.log(req.session.user)
+	res.locals.user = req.session.user || null
+	next()
+}) 
+
 
 /*************** static init **************/
 app.use('/', express.static(path.join(__dirname, 'public')))
