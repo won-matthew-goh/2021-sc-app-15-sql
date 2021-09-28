@@ -17,8 +17,10 @@ const deserialize = async (idx, done) => {
 }
 
 module.exports = passport => {
-
 	passport.serializeUser(serialize)
 	passport.deserializeUser(deserialize)
 	local(passport)
+	// kakao(passport)
+	// naver(passport)
+	// facebook(passport)
 }
