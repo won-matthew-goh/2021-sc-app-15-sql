@@ -17,4 +17,4 @@ router.delete('/:idx', async (req, res, next) => {
 })
 
 
-module.exports = router
+module.exports = router 
