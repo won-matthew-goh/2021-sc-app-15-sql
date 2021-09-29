@@ -17,7 +17,6 @@ router.get('/', isGuest, (req, res, next) => {
 
 router.post('/', isGuest, async (req, res, next) => {
 	const done = (err, user, msg) => {
-		res.locals.user = user ? user : null
 		if(err) return next(err)
 		else if(!user) return res.send(alert(msg))
 		else {
