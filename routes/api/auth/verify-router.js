@@ -1,15 +1,15 @@
 const path = require('path')
 const express = require('express')
 const router = express.Router()
-const createError = require('http-errors')
+const { error } = require('../../../modules/util')
 const { mysql, pool } = require('../../../modules/mysql-init')
-const { isVerify } = require('../../../models/auth')
+const { existUser } = require('../../../models/auth')
 
 router.get('/verify', async (req, res, next) => {
 	// userid, email 중복 검증
 	try {
-		const isUSer = await isVerify(req.query.key, req.query.value)
-		res.status(200).json({isUsed})
+		const { success: isUsed } = await existUser(req.query.key, req.query.value)
+		res.status(200).json({ isUsed })
 	}
 	catch(err) {
 		next(createError(err))
