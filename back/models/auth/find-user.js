@@ -58,7 +58,7 @@ const findAllUser = async (order = 'ASC') => {
 }
 
 // GET: field, value를 통한 회원 존재 여부 확인
-const existUser = async (key, value) => {
+const existUser = async (key, value, update=0) => {
 	try {
 		const sql = ` SELECT * FROM users WHERE ${key} = ? `
 		const [rs] = await pool.execute(sql, [value])
