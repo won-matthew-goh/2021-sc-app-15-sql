@@ -4,7 +4,7 @@ const router = express.Router()
 const createError = require('http-errors') 
 const { alert } = require('../../modules/util')
 const { isUser } = require('../../middlewares/auth-mw')
-const { findUser, updateUser } = require('../../models/auth')
+const { findUser, updateUser, updateDomain } = require('../../models/auth')
 
 // 내 회원정보 보여주기 GET: /mypage/user
 router.get('/', isUser, async (req, res, next) => {
@@ -14,7 +14,6 @@ router.get('/', isUser, async (req, res, next) => {
 		req.app.locals.css = 'mypage/form'
 		req.app.locals.js = 'mypage/form'
 		const { success, user } = await findUser('idx', req.user.idx)
-		console.log(user)
 		if(success) res.render('mypage/form', { ...user })
 		else res.send(alert('회원이 아닙니다.'))
 	}
@@ -27,7 +26,7 @@ router.get('/', isUser, async (req, res, next) => {
 router.post('/', async (req, res, next) => {
 	try {
 		const r = await updateUser(req.body)
-		if(r) res.redirect('/')
+		if(r) res.send(alert('User Updated', '/mypage/user'))
 		else res.send(alert(req.app.locals.ERROR.SQL_ERROR))
 	}
 	catch(err) {
@@ -36,8 +35,16 @@ router.post('/', async (req, res, next) => {
 })
 
 // 회원정보 수정 /mypage/user/api
-router.post('/api', async (req, res, next) => {
-
+router.post('/api', isUser, async (req, res, next) => {
+	try {
+		const { ERROR } = req.app.locals
+		const r = await updateDomain(req.body.domain, req.user.idx)
+		if(r) res.send(alert('Success', '/mypage/user'))
+		else res.send(alert(ERROR.SQL_ERROR, '/'))
+	}
+	catch(err) {
+		next(createError(err))
+	}
 })
 
 
