@@ -17,7 +17,7 @@ router.get('/:idx', async (req, res, next) => {
 			book.isImg = isImg(book.savename2 || '')
 			res.status(200).json(book)
 		}
-		else next(createError(400, NO_EXIST))
+		else next(createError(400))
 	}
 	catch(err) {
 		next(createError(err))

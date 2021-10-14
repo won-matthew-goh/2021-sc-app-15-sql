@@ -6,7 +6,7 @@ passwd === passwd2
 email 검증
 */
 
-const { alert } = require("../../../modules/util");
+// const { alert } = require('../../../modules/util');
 
 var f = document.saveForm;
 var f2 = document.apiForm;
