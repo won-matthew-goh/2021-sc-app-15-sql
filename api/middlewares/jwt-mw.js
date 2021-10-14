@@ -20,15 +20,20 @@
 */
 
 const jwt = require('jsonwebtoken')
+const createError = require('http-errors')
+const { pool } = require('../modules/mysql-init')
 
-const isApiUser = (req, res, next) => {
+const isApiUser = async (req, res, next) => {
   try {
-    console.log(req.headers)
-    console.log(req.query.apikey)
-    next()
+    const domain = req.protocol + '://' + req.headers.host
+    const apikey = req.query.apikey
+    const sql = " SELECT * FROM users_api WHERE domain=? AND apikey=? "
+    const [rs] = await pool.execute(Sql, [domain, apikey])
+    if(rs.length === 1) next()
+    else next(createError(401, 'Authorization Fail'))
   }
   catch(err) {
-
+    next(createError(err))
   }
 }
 
