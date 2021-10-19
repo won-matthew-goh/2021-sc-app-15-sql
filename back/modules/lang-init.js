@@ -22,6 +22,7 @@ module.exports = _lang => {
 						EMAIL_NULL	: '이메일을 입력하세요.',
 						EMAIL_VALID	: '이메일 형식이 올바르지 않습니다.',
 						EMAIL_TAKEN	: '이미 사용중인 이메일 주소 입니다. 다른 이메일 주소를 사용해 주세요.',
+						MSG_NULL		: '탈퇴 사유를 작성해 주세요.',
 					}
 				},
 				GLOBAL: {
@@ -125,6 +126,7 @@ module.exports = _lang => {
 						EMAIL_NULL	: 'Please enter your email',
 						EMAIL_VALID	: 'Email format is incorrect.',
 						EMAIL_TAKEN	: 'This Email address is already taken. Please use a differnt email address',
+						MSG_NULL		: 'Pleas write your reason for withdrawal.',
 					}
 				},
 				GLOBAL: {
