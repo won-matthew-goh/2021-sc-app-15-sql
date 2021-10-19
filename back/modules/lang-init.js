@@ -25,6 +25,10 @@ module.exports = _lang => {
 						MSG_NULL		: '탈퇴 사유를 작성해 주세요.',
 					}
 				},
+				ALERT: {
+					WITHDRAWAL		: '회원 탈퇴가 처리되었습니다.',
+					SNS_MSG				: 'SNS 회원은 탈퇴 후 다시 로그인 하시면 재가입 됩니다.',
+				},
 				GLOBAL: {
 					LOGO					: '도서관리시스템',
 					TAB_TITLE			: 'Express 게시판',
@@ -128,6 +132,10 @@ module.exports = _lang => {
 						EMAIL_TAKEN	: 'This Email address is already taken. Please use a differnt email address',
 						MSG_NULL		: 'Pleas write your reason for withdrawal.',
 					}
+				},
+				ALERT: {
+					WITHDRAWAL		: 'Membership withdrawal has been processed',
+					SNS_MSG				: 'If you log in again after withdrawaing from SNS, you will be rejoined.',
 				},
 				GLOBAL: {
 					LOGO					: 'BOOK MANAGEMENT SYSTEM',

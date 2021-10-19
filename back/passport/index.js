@@ -15,10 +15,12 @@ const naver = require('./naver-strategy')
 const { findUser } = require('../models/auth')
 
 const serialize = (user, done) => {
+	console.log(user);
 	done(null, user.idx)
 }
 
 const deserialize = async (idx, done) => {
+	console.log(idx);
 	try {
 		const { success, user } = await findUser('idx', idx)
 		if(success) done(null, user)

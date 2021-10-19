@@ -18,13 +18,20 @@
 					</td>
 				</tr>
 				<!-- 패스워드 -->
-				<tr>
-					<td class="title require"><%= AUTH.PASSWD %></td>
-					<td class="content">
-						<input type="password" name="passwd" class="form-control" placeholder="<%= AUTH.PASSWD %>">
-						<div class="valid passwd"></div>
-					</td>
-				</tr>
+				<% if (user && user.status >= 5) { %>
+					<tr>
+						<td class="title require"><%= AUTH.PASSWD %></td>
+						<td class="content">
+							<input type="password" name="passwd" class="form-control" placeholder="<%= AUTH.PASSWD %>">
+							<div class="valid passwd"></div>
+						</td>
+					</tr>
+				<% } %>
+				<% } else { %>
+					<tr>
+						<td colspan="2"><%= ALERT.SNS_MSG %></td>
+					</tr>
+				<% } %>
 			</tbody>
 		</table>
 		<div class="btn-wrap p-3 text-center">

@@ -27,4 +27,19 @@ const updateUser = async ({ idx, passwd, username, email, sql, values }) => {
 	}
 }
 
-module.exports = { updateUser }
+/* 
+obj = { 필드명: 값, 필드명2: 값 ... }
+key = { 키: 값 } 기준
+*/
+const changeUser = async (obj, key, tblName = 'users') => {
+	sql = ` UPDATE ${tblName} SET `
+	for(let v of Object.entries(obj)) sql += ` ${v[0]}='${v[1]}',`
+	sql = sql. substr(0, sql.length - 1)
+	sql += ` WHERE ${Object.keys(key)[0]}=? `
+	const [r] = await pool.execute(sql, [Object.value(key)[0]])
+	return (r.affectedRows)
+		? { success: ture }
+		: { success: false }
+}
+
+module.exports = { updateUser, changeUser }
