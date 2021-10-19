@@ -13,32 +13,34 @@ pool.execute() => INSERT, UPDATE, DELETE [{ affectedRows... },{ field info }]
 pool.execute() => SELECT [[{ id: 1...},{ id: 2...},{ id: 3...}],{ field info }]
 */
 
-// GET: field, value를 통한 회원 한 명 데이터
+// GET: field, value를 회원 데이터-한명
 const findUser = async (key, value) => {
 	let sql
 	try {
-		sql = ` SELECT 
+		sql = ` 
+		SELECT 
 		U.*, 
 		S.idx AS sidx, 
 		S.provider, 
 		S.snsname, 
 		S.displayName, 
-		S.email as snsEmail,
+		S.email AS snsEmail, 
 		S.profileURL, 
-		S.status AS status_sns,
+		S.status AS snsStatus,
 		A.domain,
-		A.apikey
-		FROM users AS U LEFT JOIN users_sns AS S
-		ON U.idx = S.fidx
-		LEFT JOIN users_api AS A
-		ON U.idx = A.fidx
+		A.apikey 
+		FROM users AS U 
+		LEFT JOIN users_sns AS S
+		ON U.idx = S.fidx 
+		LEFT JOIN users_api AS A 
+		ON U.idx = A.fidx 
 		WHERE U.${key} = ? `
 		const [r] = await pool.execute(sql, [value])
 		if(r.length === 1) {
-			r[0].domain = r[0].domain.split(',').join('\r\n')
+			r[0].domain = r[0].domain ? r[0].domain.split(',').join('\r\n') : ''
 			return { success: true, user: r[0] }
 		}
-		else
+		else 
 			return { success: false, user: null }
 	}
 	catch(err) {
@@ -59,8 +61,9 @@ const findAllUser = async (order = 'ASC') => {
 	}
 }
 
-// GET: field, value를 통한 회원 존재 여부 확인
-const existUser = async (key, value, update=0) => {
+// GET: field, value -> 회원존재여부
+// Login (아이디 중복 확인)
+const existUser = async (key, value) => {
 	try {
 		const sql = ` SELECT * FROM users WHERE ${key} = ? `
 		const [rs] = await pool.execute(sql, [value])
@@ -75,7 +78,7 @@ const existUser = async (key, value, update=0) => {
 const loginUser = async (userid, passwd) => {
 	let sql, compare
 	try {
-		sql = " SELECT * FROM users WHERE userid=? "
+		sql = " SELECT * FROM users WHERE userid=? AND status > 0 "
 		const [r] = await pool.execute(sql, [userid])
 		if(r.length === 1) {
 			compare = await bcrypt.compare(passwd + process.env.BCRYPT_SALT, r[0].passwd)

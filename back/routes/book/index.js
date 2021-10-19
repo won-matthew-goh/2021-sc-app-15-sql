@@ -10,12 +10,12 @@ const downloadRouter = require('./download-router')
 const saveRouter = require('./save-router')
 const deleteRouter = require('./delete-router')
 
-router.post('/', saveRouter)												// FORM/POST: 저장 및 수정
-router.delete('/', deleteRouter)										// FORM/DELETE: 삭제
-router.use('/form', formRouter)											// HTML: 글작성(수정)페이지
-router.use('/view', viewRouter)											// HTML/GET: 상세페이지
-router.use('/download', downloadRouter)							// HTML/GET: 상세페이지
-router.use('/', listRouter)													// HTML/GET: 리스트페이지
+router.post('/', saveRouter)										// FORM/POST: 저장, 수정
+router.delete('/', deleteRouter)								// FORM/DELETE: 삭제
+router.use('/form', formRouter)									// HTML: 글작성(수정)페이지
+router.use('/view', viewRouter)									// HTML/GET: 상세페이지
+router.use('/download', downloadRouter)					// HTML/GET: 상세페이지
+router.use('/', listRouter)											// HTML/GET: 리스트페이지
 
 module.exports = router
 
