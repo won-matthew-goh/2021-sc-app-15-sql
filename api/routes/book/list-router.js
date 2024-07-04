@@ -12,7 +12,7 @@ router.get(['/', '/:page'], isApiUser, async (req, res, next) => {
   try {
     const { count: totalRecord } = await findBookCount();
     const page = Number(req.params.page || 1);
-    const pager = createPager(page, totalRecord, 10, 3);
+    const pager = createPager(page, totalRecord, 7, 3);
     const { books } = await findBooks(pager.startIdx.toString(), pager.listCnt.toString());
     books.forEach((v) => {
       v.createdAt = moment(v.createdAt).format('YYYY-MM-DD');
